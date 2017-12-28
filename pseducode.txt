@@ -1,0 +1,37 @@
+/* Constants: pre-determined variables
+Will not change during execution of the code*/
+CONST FINAL_HEIGHT 30000;
+CONST DEPLOY_TIME 1000;    //Time measured in milliseconds
+CONST SUBSONIC_HEIGHT;
+
+
+/*Variables: subject to change via time*/
+var current_alt;
+var predicted_alt;
+
+
+/*Functions*/
+//Code for actuating mechanical parts
+function deploy(){
+   //i.e. servo1(100, 300, 300) servo2(300, 100, 100)...
+}
+
+//Checks whether deployment should occur via comparing the absolute difference between height difference after actuation and no actuation
+deploy_check(current_alt, predicted_alt){
+   ((current_alt-predicted_alt) <= (current_alt-DEPLOY_TIME)) ? true : false;
+}
+
+/*Execution*/
+while(current_alt-FINAL_HEIGHT > 0 && current_alt >= SUBSONIC_HEIGHT){
+   try{
+      if (current_alt-predicted_alt < DEPLOY_TIME) throw "not eligible for actuation.";
+      if (deploy_check(current_alt, predicted_alt) === false) throw "height difference not great enough";
+      deploy();
+   }
+   catch(err){
+      print(err);
+   }
+   if (current_alt >= FINAL_HEIGHT){
+      break();
+   }
+}
