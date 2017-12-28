@@ -6,8 +6,8 @@ CONST SUBSONIC_HEIGHT;
 
 
 /*Variables: subject to change via time*/
-var current_alt;
-var predicted_alt;
+var current_alt;           //Fed in via avionics sensors
+var predicted_alt;         //Based on calculations done with onboard current_alt to give a predicted_alt
 
 
 /*Functions*/
@@ -17,13 +17,26 @@ function deploy(){
 }
 
 //Checks whether deployment should occur via comparing the absolute difference between height difference after actuation and no actuation
-deploy_check(current_alt, predicted_alt){
+function deploy_check(current_alt, predicted_alt){
    ((current_alt-predicted_alt) <= (current_alt-DEPLOY_TIME)) ? true : false;
+}
+
+//Gets current altitude
+function get_current(){
+   //...
+}
+
+//Calculates new predicted altitude based on series of calculations done with current altitude
+function get_new_alt(current_alt){
+   //...
 }
 
 /*Execution*/
 while(current_alt-FINAL_HEIGHT > 0 && current_alt >= SUBSONIC_HEIGHT){
+   current_alt = get_current();
+   predicted_alt = get_new_alt(current_alt);
    try{
+      //Throw errors based on different conditions
       if (current_alt-predicted_alt < DEPLOY_TIME) throw "not eligible for actuation.";
       if (deploy_check(current_alt, predicted_alt) === false) throw "height difference not great enough";
       deploy();
